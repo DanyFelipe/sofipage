@@ -6,21 +6,31 @@
   align-items: center;
   justify-content: center;
 
-  /* Background Ghibli — Background_2.jpg feels more like an anime frame */
-  background: url('/background_2.jpg') no-repeat center center;
-  background-size: cover;
+  /* Base color while image loads */
+  background: #0a0805;
 
   transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1),
     visibility 1.5s;
 }
 
+/* Background Image Layer */
+.curtain-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('/background_2.jpg') no-repeat center center;
+  background-size: cover;
+  z-index: -2;
+}
+
+/* Blur & Darken Layer */
 .curtain-overlay::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: -1;
 }
 
