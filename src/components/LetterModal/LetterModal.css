@@ -1,0 +1,394 @@
+/* ─── Design tokens (scoped al componente) ───────────────────────────────── */
+/*
+ * Todas las decisiones de diseño viven aquí.
+ * Para cambiar la paleta o tiempos, edita solo este bloque.
+ */
+.letter-card {
+  /* Colores */
+  --letter-parchment-start: #fdf6e3;
+  --letter-parchment-mid: #f5e6c8;
+  --letter-parchment-end: #eedcb0;
+  --letter-ink: #2a1b0a;
+  --letter-ink-heading: #3a250b;
+  --letter-ink-muted: #4a3414;
+  --letter-ink-ui: #5a4218;
+  --letter-gold-rgb: 160, 120, 70;
+  --letter-seal-start: #d63c3c;
+  --letter-seal-end: #9c1b1b;
+
+  /* Transparencias reutilizables */
+  --letter-tint-sm: rgba(var(--letter-gold-rgb), 0.10);
+  --letter-tint-md: rgba(var(--letter-gold-rgb), 0.25);
+  --letter-tint-border: rgba(var(--letter-gold-rgb), 0.35);
+  --letter-tint-hover: rgba(var(--letter-gold-rgb), 0.55);
+
+  /* Tipografía */
+  --letter-font: 'Carattere', cursive;
+
+  /* Timing — fuente única de verdad compartida con LetterModal.tsx */
+  --letter-page-duration: 500ms;
+  --letter-page-easing-in: cubic-bezier(0.22, 1, 0.36, 1);
+  --letter-page-easing-out: cubic-bezier(0.40, 0, 1.00, 1);
+  --letter-slide-distance: 36px;
+}
+
+/* ─── Backdrop ───────────────────────────────────────────────────────────── */
+
+.letter-backdrop {
+  position: fixed;
+  /* Senior Tip: Overscan (-20px) ensures backdrop-filter blur doesn't bleed at the edges */
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(10, 8, 5, 0.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: letterBackdropIn 0.4s ease both;
+}
+
+/* ─── Card ───────────────────────────────────────────────────────────────── */
+
+.letter-card {
+  position: relative;
+  max-width: 540px;
+  width: 100%;
+  padding: 3rem 3.5rem 1.5rem;
+  border-radius: 2px;
+
+  background: radial-gradient(ellipse at 20% 10%,
+      var(--letter-parchment-start) 0%,
+      var(--letter-parchment-mid) 60%,
+      var(--letter-parchment-end) 100%);
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.12),
+    0 20px 60px rgba(0, 0, 0, 0.45),
+    inset 0 0 40px rgba(var(--letter-gold-rgb), 0.15);
+  border: 1px solid var(--letter-tint-border);
+
+  animation: letterCardIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: top center;
+
+  /* Senior Sharpness Stack: We avoid persistent 3D transforms here */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* translateZ(0) is okay for layer promotion, but we'll let the animation finish in 'none' */
+}
+
+/* Fold crease at top */
+.letter-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(var(--letter-gold-rgb), 0.25) 30%,
+      rgba(var(--letter-gold-rgb), 0.12) 70%,
+      transparent 100%);
+  border-radius: 2px 2px 0 0;
+}
+
+/* ─── Wax seal ───────────────────────────────────────────────────────────── */
+
+.letter-seal {
+  position: absolute;
+  top: -1.1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%,
+      var(--letter-seal-start),
+      var(--letter-seal-end));
+  box-shadow:
+    0 2px 8px rgba(176, 32, 32, 0.50),
+    inset 0 1px 2px rgba(255, 120, 120, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.85);
+  pointer-events: none;
+}
+
+/* ─── Close button ───────────────────────────────────────────────────────── */
+
+.letter-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--letter-ink-ui);
+  opacity: 0.6;
+  cursor: pointer;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  line-height: 1;
+}
+
+.letter-close:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* ─── Typography ─────────────────────────────────────────────────────────── */
+
+.letter-greeting {
+  font-family: var(--letter-font);
+  font-size: 2rem;
+  color: var(--letter-ink-heading);
+  margin-bottom: 1.2rem;
+  line-height: 1.2;
+}
+
+.letter-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.letter-paragraph {
+  font-family: var(--letter-font);
+  font-size: 1.85rem;
+  line-height: 1.6;
+  color: var(--letter-ink);
+  text-indent: 1.2em;
+  letter-spacing: 0.02em;
+}
+
+.letter-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+}
+
+.letter-footer-spacer {
+  height: 2.5rem;
+}
+
+.letter-closing {
+  font-family: var(--letter-font);
+  font-size: 1.5rem;
+  color: var(--letter-ink-muted);
+}
+
+.letter-signature {
+  font-family: var(--letter-font);
+  font-size: 2.2rem;
+  font-weight: 400;
+  color: var(--letter-ink-heading);
+  letter-spacing: 0.02em;
+}
+
+/* ─── Divider ────────────────────────────────────────────────────────────── */
+
+.letter-divider {
+  width: 100%;
+  height: 1px;
+  margin: 1rem 0;
+  background: linear-gradient(90deg,
+      transparent,
+      var(--letter-tint-border) 20%,
+      var(--letter-tint-border) 80%,
+      transparent);
+}
+
+/* ─── Paginated content area ─────────────────────────────────────────────── */
+
+.letter-page {
+  min-height: 8rem;
+  overflow: hidden;
+}
+
+/* Enter animations */
+.letter-page--enter-next {
+  animation:
+    slideInFromRight var(--letter-page-duration) var(--letter-page-easing-in) both;
+}
+
+.letter-page--enter-prev {
+  animation:
+    slideInFromLeft var(--letter-page-duration) var(--letter-page-easing-in) both;
+}
+
+/* Exit animations */
+.letter-page--exit-next {
+  animation:
+    slideOutToLeft var(--letter-page-duration) var(--letter-page-easing-out) both;
+}
+
+.letter-page--exit-prev {
+  animation:
+    slideOutToRight var(--letter-page-duration) var(--letter-page-easing-out) both;
+}
+
+/* ─── Pagination nav ─────────────────────────────────────────────────────── */
+
+.letter-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+}
+
+.letter-nav-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--letter-ink-ui);
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    transform 0.15s ease;
+  line-height: 1;
+  will-change: transform;
+}
+
+.letter-nav-btn:hover:not(:disabled) {
+  color: var(--letter-ink-heading);
+  transform: scale(1.2);
+}
+
+.letter-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.letter-dots {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.letter-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: rgba(var(--letter-gold-rgb), 0.30);
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.letter-dot--active {
+  background: var(--letter-ink-ui);
+  transform: scale(1.35);
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+  .letter-card {
+    padding: 2.5rem 1.75rem 1.25rem;
+  }
+
+  .letter-greeting {
+    font-size: 1.75rem;
+  }
+
+  .letter-paragraph {
+    font-size: 1.65rem;
+    line-height: 1.5;
+  }
+
+  .letter-signature {
+    font-size: 1.9rem;
+  }
+}
+
+/* ─── Keyframes ──────────────────────────────────────────────────────────── */
+
+@keyframes letterBackdropIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes letterCardIn {
+  from {
+    opacity: 0;
+    /* We use perspective and rotation ONLY during the entrance animation */
+    transform: perspective(1200px) rotateX(-12deg) scale(0.85) translateY(-25px);
+  }
+
+  to {
+    opacity: 1;
+    /* Essential: transform: none tells the browser to return to 2D rasterization,
+       eliminating the blurriness caused by persistent 3D contexts. */
+    transform: none;
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(var(--letter-slide-distance));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(calc(-1 * var(--letter-slide-distance)));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutToLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(calc(-1 * var(--letter-slide-distance)));
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(var(--letter-slide-distance));
+  }
+}
