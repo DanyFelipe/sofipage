@@ -36,16 +36,17 @@
 
 .letter-backdrop {
   position: fixed;
-  /* Senior Tip: Overscan (-20px) ensures backdrop-filter blur doesn't bleed at the edges */
-  top: -20px;
-  left: -20px;
-  right: -20px;
-  bottom: -20px;
+  inset: -20px; /* Overscan to prevent backdrop-filter blur bleed */
   z-index: 60;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
+  
+  /* Scroll management for mobile and long content */
+  padding: 3rem 1rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
   background: rgba(10, 8, 5, 0.78);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -58,6 +59,8 @@
   position: relative;
   max-width: 540px;
   width: 100%;
+  margin: auto; /* Centers when fits, allows scroll when overflows */
+  flex-shrink: 0; /* Prevents card from collapsing on small viewports */
   padding: 3rem 3.5rem 1.5rem;
   border-radius: 2px;
 

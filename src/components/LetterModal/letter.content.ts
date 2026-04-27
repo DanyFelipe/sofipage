@@ -27,6 +27,10 @@ export const LETTER_CONTENT = {
     {
       paragraphs: [
         'Durante estos últimos meses, en los ratos libres que encontraba —entre leer documentación, corregir errores y avanzar poco a poco en esta página— hubo algo que se volvió constante sin que lo notara al principio: siempre estabas en mi mente.',
+      ],
+    },
+    {
+      paragraphs: [
         'Sin darme cuenta, todo ese proceso, que normalmente sería solo trabajo de programación y diseño, empezó a sentirse distinto, más tranquilo… casi como si cada momento que dedicaba a esto también fuera una forma de acercarme un poco más a ti.'
       ],
     },
@@ -38,20 +42,32 @@ export const LETTER_CONTENT = {
     {
       paragraphs: [
         'Soy consciente de que hay circunstancias que marcan el momento en el que estamos, y que a veces pueden hacer que las cosas no sean tan simples como uno quisiera. Por eso prefiero que todo se dé con calma, dejando que las cosas tomen su propio ritmo.',
+      ],
+    },
+    {
+      paragraphs: [
         'Pero si algo tengo claro es que haberte conocido no se siente casual. Y si la vida decidió cruzar nuestros caminos ahora, me gusta pensar que, de alguna forma, sabrá volver a hacerlo cuando el momento sea el adecuado.'
       ],
     },
     {
       paragraphs: [
         'Puede que todo esto suene más directo de lo que esperabas. Pero en realidad no es nada distinto a lo que se va dando poco a poco… solo que aquí decidí ponerlo todo junto en una sola carta, y quizá por eso se siente más intenso.',
+      ],
+    },
+    {
+      paragraphs: [
         'Al final, es también la forma más natural que tengo de expresar interés: más en los detalles y en lo que hago que en lo que digo, y esta fue mi manera de hacerlo.'
       ],
     },
     {
       paragraphs: [
         'No sé muy bien en qué momento leerás esto, ni qué pensarás al hacerlo. Solo quería que supieras que, entre todo lo que pude haber hecho, elegí dedicar este tiempo a ti.',
+      ],
+    },
+    {
+      paragraphs: [
         'Y supongo que eso, de alguna forma, ya dice bastante.'
       ],
-    }
+    },
   ],
 } as const;
