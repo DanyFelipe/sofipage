@@ -5,33 +5,37 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* Base color while image loads */
-  background: #0a0805;
+  background: #000;
+  overflow: hidden;
+  /* Prevent blurred edges from leaking */
 
   transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1),
     visibility 1.5s;
 }
 
-/* Background Image Layer */
+/* Background Image Layer with direct Blur */
 .curtain-overlay::before {
   content: '';
   position: absolute;
-  inset: 0;
+  /* Overscan ensures the blurred edges are clipped outside the viewport */
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
   background: url('/background_2.jpg') no-repeat center center;
   background-size: cover;
-  z-index: -2;
+
+  /* Robust blur & brightness control */
+  filter: blur(10px) brightness(0.6);
+  -webkit-filter: blur(10px) brightness(0.6);
+
+  z-index: -1;
+  will-change: filter;
 }
 
-/* Blur & Darken Layer */
+/* We don't need ::after anymore as effect is combined in ::before */
 .curtain-overlay::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  z-index: -1;
+  display: none;
 }
 
 .curtain-overlay[data-open="true"] {
